@@ -1,23 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Code2, Terminal, Cpu, Database, ShieldCheck, ArrowRight, Mail, 
-  User, Download, Award, FolderCode, Calendar, UserCheck, 
-  Armchair, Activity, MessageSquare, MapPin, Send, Share2, 
-  ArrowLeft, Image as ImageIcon, X 
+import {
+  Code2, Terminal, Cpu, Database, ShieldCheck, ArrowRight, Mail,
+  User, Download, Award, FolderCode, Calendar, UserCheck,
+  Armchair, Activity, MessageSquare, MapPin, Share2,
+  ArrowLeft, Image as ImageIcon, X
 } from 'lucide-react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import emailjs from '@emailjs/browser';
-import { db } from './firebase'; 
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { motion } from 'framer-motion';
+import { FaLaptopCode, FaCode, FaHeadset, FaHashtag } from 'react-icons/fa';
+
+// -------------------------------------------------------------
+// ASSETS IMPORTS
+// -------------------------------------------------------------
+import profileImg from './assets/profile.jpg';
+import cert1 from './assets/certificates/Building-Story-base-Design-Cert.png';
+import cert2 from './assets/certificates/Clean-Refine-and-Visualize-Data- with-IBM-Walson-Studio.png';
+import cert3 from './assets/certificates/Conducting-Usability-and-Gathering-Feedback-Cert.png';
+import cert4 from './assets/certificates/Conduction-UX-Research-Cert.png';
+import cert5 from './assets/certificates/Data-Fundamentals-Cert.png';
+import cert6 from './assets/certificates/Data-Science-in-Our-World-Cert.png';
+import cert7 from './assets/certificates/Introduction-to-Data-Concept-Cert.png';
+import cert8 from './assets/certificates/Introduction-to-UX-Design-Cert.png';
+import cert9 from './assets/certificates/Overview-of-Data-Tools-and-Languages-Cert.png';
+import cert10 from './assets/certificates/Python-Cisco-Cert.png';
+import cert11 from './assets/certificates/Wireframing-and-Prototyping-Cert.png';
+import cert12 from './assets/certificates/Working-Collaboratively-with-Teams-on-UX-Design-Projects-Cert.png';
+import cert13 from './assets/certificates/Your-Future-in-UX-Design-The-Job-Landscape-Cert.png';
+
+import web1 from './assets/webdesign/E-commerce-Design.png';
+import web2 from './assets/webdesign/FilipinoTVShow-web-Design.png';
+import web3 from './assets/webdesign/Airplane-Company-Design.png';
+import web4 from './assets/webdesign/FEU-LadyTamaraw-Web-Design.png';
 
 // -------------------------------------------------------------
 // ANIMATION VARIANTS FOR SCROLL FADE EFFECT
 // -------------------------------------------------------------
 const sectionVariant = {
   hidden: { opacity: 0, y: 50 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.8, ease: "easeOut" }
   }
@@ -77,6 +98,131 @@ const projectData = {
   }
 };
 
+const webDesignData = [
+  {
+    id: 1,
+    title: "E-Commerce Design",
+    desc: "Modern UI/UX web layout designed for online store browsing, product catalogs, and cart checkouts.",
+    tech: ["Figma", "UI/UX", "Web Design"],
+    image: web1
+  },
+  {
+    id: 2,
+    title: "Filipino TV Show Design",
+    desc: "Interactive streaming and promotional interface concept themed for popular Filipino television networks.",
+    tech: ["Figma", "UI/UX", "Entertainment"],
+    image: web2
+  },
+  {
+    id: 3,
+    title: "Airplane Company Design",
+    desc: "Sleek flight booking dashboard interface customized for commercial airline itineraries and flight scheduling.",
+    tech: ["Figma", "UI/UX", "Dashboard"],
+    image: web3
+  },
+  {
+    id: 4,
+    title: "FEU Tamaraw Design",
+    desc: "Dynamic digital showcase platform designed for FEU Tamaraws athletics and community news.",
+    tech: ["Figma", "Branding", "UI/UX"],
+    image: web4
+  }
+];
+
+const certificatesList = [
+  {
+    id: 1,
+    title: "Building Story-based Design",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM covering user story creation, narrative design frameworks, and user empathy.",
+    image: cert1
+  },
+  {
+    id: 2,
+    title: "Clean, Refine, and Visualize Data",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM demonstrating proficiency in data cleaning, transformation, and visualizations.",
+    image: cert2
+  },
+  {
+    id: 3,
+    title: "Conducting Usability and Gathering Feedback",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM validating skills in usability testing and user interaction analysis.",
+    image: cert3
+  },
+  {
+    id: 4,
+    title: "Conducting UX Research",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM focusing on primary user research and qualitative interviews.",
+    image: cert4
+  },
+  {
+    id: 5,
+    title: "Data Fundamentals",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM introducing foundational data concepts and relational database architecture.",
+    image: cert5
+  },
+  {
+    id: 6,
+    title: "Data Science in Our World",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM exploring real-world analytical workflows and predictive models.",
+    image: cert6
+  },
+  {
+    id: 7,
+    title: "Introduction to Data Concepts",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM covering data structures, storage systems, and processing models.",
+    image: cert7
+  },
+  {
+    id: 8,
+    title: "Introduction to UX Design",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM covering core UI/UX principles, design thinking, and wireframes.",
+    image: cert8
+  },
+  {
+    id: 9,
+    title: "Overview of Data Tools and Languages",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM covering query languages and essential data engineering tools.",
+    image: cert9
+  },
+  {
+    id: 10,
+    title: "Python Essentials",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM validating programming logic, functions, and object-oriented concepts.",
+    image: cert10
+  },
+  {
+    id: 11,
+    title: "Wireframing and Prototyping",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM focusing on low-to-high fidelity wireframing and interactive prototypes.",
+    image: cert11
+  },
+  {
+    id: 12,
+    title: "Working Collaboratively with Teams",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM highlighting Agile methodologies and collaborative software development.",
+    image: cert12
+  },
+  {
+    id: 13,
+    title: "Your Future in UX Design",
+    issuer: "IBM",
+    desc: "Digital credential issued by IBM focusing on industry UX standards and professional design readiness.",
+    image: cert13
+  }
+];
+
 const techStack = [
   { name: 'HTML5', icon: 'fa-brands fa-html5 text-orange-500' },
   { name: 'CSS3', icon: 'fa-brands fa-css3-alt text-blue-500' },
@@ -91,21 +237,113 @@ const techStack = [
   { name: 'Bootstrap', icon: 'fa-brands fa-bootstrap text-purple-500' },
 ];
 
+const servicesData = [
+  {
+    id: 'it-support',
+    title: 'IT Support & Maintenance',
+    icon: <FaLaptopCode className="text-3xl text-purple-400" />,
+    briefDesc: 'Comprehensive hardware/software troubleshooting and setup.',
+    fullDesc: 'Comprehensive hardware/software troubleshooting, local network configuration, database administration, system updates, and preventative maintenance.',
+    subServices: [
+      {
+        id: 'hardware-software',
+        title: 'Hardware & Software Troubleshooting',
+        desc: 'Diagnosing system errors, operating system installations, software configuration, and system optimizations.'
+      },
+      {
+        id: 'network-setup',
+        title: 'Local Network Setup',
+        desc: 'Router setup, Wi-Fi configuration, printer sharing, and local network connectivity fixes.'
+      },
+      {
+        id: 'db-admin',
+        title: 'Database Administration & Maintenance',
+        desc: 'Database installation, backup management, query optimization, and structured record handling.'
+      }
+    ]
+  },
+  {
+    id: 'admin-assistance',
+    title: 'Administrative Assistance',
+    icon: <FaCode className="text-3xl text-purple-400" />,
+    briefDesc: 'Structured data entry, meeting documentation, and workflow tracking.',
+    fullDesc: 'Structured data entry, meeting documentation, digital file organization, schedule planning, and council/administrative workflow tracking.',
+    subServices: [
+      {
+        id: 'data-entry',
+        title: 'Data Entry & Spreadsheet Management',
+        desc: 'Organizing complex sheets, compiling data summaries, and maintaining clean records.'
+      },
+      {
+        id: 'documentation',
+        title: 'Meeting Minutes & Documentation',
+        desc: 'Drafting formal meeting minutes, organizational resolutions, and official document formatting.'
+      },
+      {
+        id: 'workflow-tracking',
+        title: 'Workflow Tracking & File Management',
+        desc: 'Digital file organization, task management board setup, and project tracking.'
+      }
+    ]
+  },
+  {
+    id: 'customer-support',
+    title: 'Customer Support',
+    icon: <FaHeadset className="text-3xl text-purple-400" />,
+    briefDesc: 'Helpdesk ticketing, inquiry handling, and technical support.',
+    fullDesc: 'Helpdesk ticketing management, prompt user communication, problem resolution, onboarding guidance, and structured feedback collection.',
+    subServices: [
+      {
+        id: 'helpdesk',
+        title: 'Helpdesk & Ticket Handling',
+        desc: 'Filtering user inquiries, resolving technical questions, and documenting recurring support issues.'
+      },
+      {
+        id: 'onboarding',
+        title: 'User Onboarding Guidance',
+        desc: 'Guiding new system users through step-by-step account setups and application walk-throughs.'
+      },
+      {
+        id: 'feedback-coll',
+        title: 'Feedback Collection & Response Management',
+        desc: 'Gathering structured user feedback and responding quickly across support channels.'
+      }
+    ]
+  },
+  {
+    id: 'smm',
+    title: 'Social Media Management',
+    icon: <FaHashtag className="text-3xl text-purple-400" />,
+    briefDesc: 'Content creation, design graphics, and promotional layouts.',
+    fullDesc: 'Content calendar planning, dark/light theme graphics design, announcement releases, and targeted community engagement strategies.',
+    subServices: [
+      {
+        id: 'graphic-design',
+        title: 'Graphic Design & Layouts',
+        desc: 'Custom social media graphics, event banners, dark/monochromatic layouts, and announcement designs.'
+      },
+      {
+        id: 'content-calendar',
+        title: 'Content Planning & Scheduling',
+        desc: 'Scheduling regular announcements, structuring digital posts, and content calendar management.'
+      },
+      {
+        id: 'community-mgmt',
+        title: 'Community Engagement',
+        desc: 'Monitored engagement, responding to student/user inquiries, and managing page feedback.'
+      }
+    ]
+  }
+];
+
 export default function App() {
   // --- UI & Modal States ---
   const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState('projects');
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedCert, setSelectedCert] = useState(null);
-
-  // --- Form & Email States ---
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState({ type: '', text: '' });
+  const [selectedServiceCategory, setSelectedServiceCategory] = useState(null);
+  const [showAllCerts, setShowAllCerts] = useState(false);
 
   // --- Typing Effect State ---
   const [typedText, setTypedText] = useState('');
@@ -113,56 +351,22 @@ export default function App() {
   const [charIdx, setCharIdx] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // --- Input Change Handler ---
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // Default Gmail Mailto link with pre-filled subject
+  const placeholderBody = encodeURIComponent(
+    `Hi Jorge,
 
-  // --- Form Submission Handler (Firebase + EmailJS) ---
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setStatus({ type: '', text: '' });
+I am reaching out regarding:
+[ ] Availing a Service / Virtual Assistant
+[ ] Job Opportunity / Hiring
 
-    try {
-      // 1. Save submission to Firebase Firestore
-      await addDoc(collection(db, 'messages'), {
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        timestamp: serverTimestamp(),
-      });
+Service / Assistance Needed:
+(If you are availing a service or assistant, kindly indicate the specific service or assistance you want to avail here)
 
-      // 2. Send Email via EmailJS
-      await emailjs.send(
-        'service_m0dm1ob',
-        'template_1yevc7c',
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        'coWQOpAiegkx7Z6kb'
-      );
-
-      setStatus({
-        type: 'success',
-        text: 'Message sent successfully! Check your inbox soon.',
-      });
-
-      // Clear Form
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setStatus({
-        type: 'error',
-        text: 'Failed to send message. Please try again later.',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+Message / Details:
+(Write your message here)
+`
+  );
+  const mailToLink = "mailto:jorgedaluzon5@gmail.com?subject=Availing%20an%20Assistant%20%2F%20Contact%20for%20hiring";
 
   // Dynamic Typing Loop
   useEffect(() => {
@@ -204,6 +408,8 @@ export default function App() {
     return <Activity className="w-12 h-12 text-purple-400" />;
   };
 
+  const visibleCerts = showAllCerts ? certificatesList : certificatesList.slice(0, 6);
+
   return (
     <div className="bg-[#05020a] text-white min-h-screen font-sans overflow-x-hidden selection:bg-purple-600 selection:text-white">
 
@@ -239,7 +445,7 @@ export default function App() {
           <div className="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-300">
             JRG
           </div>
-          
+
           <div className="flex gap-6 md:gap-8 text-xs md:text-sm font-medium">
             <a href="#home" className="text-gray-300 hover:text-purple-400 transition">Home</a>
             <a href="#about" className="text-gray-300 hover:text-purple-400 transition">About</a>
@@ -252,8 +458,8 @@ export default function App() {
       <div className="pt-20">
 
         {/* 1. HERO SECTION WITH FADE-IN */}
-        <motion.section 
-          id="home" 
+        <motion.section
+          id="home"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.2 }}
@@ -264,7 +470,7 @@ export default function App() {
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center z-10">
-            
+
             <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/30 shadow-2xl relative overflow-hidden group hover:border-purple-500/50 transition duration-500">
               <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
                 <div className="flex space-x-2">
@@ -274,14 +480,14 @@ export default function App() {
                 </div>
                 <span className="text-xs font-mono text-purple-300/70">developer_environment.v2</span>
               </div>
-              
+
               <div className="space-y-4 font-mono text-xs md:text-sm">
                 <div className="text-purple-400"><span className="text-indigo-400">const</span> developer = &#123;</div>
                 <div className="pl-4 text-gray-300">name: <span className="text-green-400">'Jorge Daluzon'</span>,</div>
                 <div className="pl-4 text-gray-300">role: <span className="text-yellow-400">'BSIT Student & Developer'</span>,</div>
                 <div className="pl-4 text-gray-300">location: <span className="text-purple-300">'San Fernando, Pampanga'</span></div>
                 <div className="text-purple-400">&#125;;</div>
-                
+
                 <div className="pt-4 border-t border-white/5 flex items-center justify-between">
                   <div className="flex items-center space-x-2 text-purple-300">
                     <Database className="w-5 h-5 animate-pulse" />
@@ -296,23 +502,23 @@ export default function App() {
               <span className="px-3 py-1.5 text-xs rounded-full bg-purple-900/40 text-purple-300 border border-purple-500/30 font-medium inline-flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-green-400 animate-ping" /> Available for Projects
               </span>
-              
+
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
                 Passionate <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-300 to-purple-500 border-r-2 border-purple-400 pr-1">
                   {typedText}
                 </span>
               </h1>
-              
+
               <p className="text-gray-400 text-sm md:text-base leading-relaxed">
                 Crafting intuitive desktop applications, reservation software, healthcare management systems, and functional UI/UX experiences tailored for real-world operations.
               </p>
-              
+
               <div className="flex gap-4 pt-4">
                 <a href="#portfolio" className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition duration-300 flex items-center gap-2 shadow-lg shadow-purple-600/30">
                   Explore Work <ArrowRight className="w-4 h-4" />
                 </a>
-                <a href="#contact" className="px-6 py-3 bg-white/5 hover:bg-purple-900/30 text-white rounded-xl text-sm font-semibold transition duration-300 border border-purple-500/30 flex items-center gap-2">
+                <a href={mailToLink} className="px-6 py-3 bg-white/5 hover:bg-purple-900/30 text-white rounded-xl text-sm font-semibold transition duration-300 border border-purple-500/30 flex items-center gap-2">
                   Contact Me <Mail className="w-4 h-4" />
                 </a>
               </div>
@@ -322,8 +528,8 @@ export default function App() {
         </motion.section>
 
         {/* 2. ABOUT ME SECTION WITH FADE-IN */}
-        <motion.section 
-          id="about" 
+        <motion.section
+          id="about"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.2 }}
@@ -337,9 +543,13 @@ export default function App() {
             </div>
 
             <div className="bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-purple-500/20 flex flex-col md:flex-row items-center gap-10">
-              
-              <div className="w-44 h-44 rounded-2xl bg-gradient-to-br from-purple-900/50 to-indigo-950/50 border border-purple-500/30 flex items-center justify-center relative shrink-0 shadow-inner overflow-hidden">
-                <User className="w-20 h-20 text-purple-400" />
+
+              <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl bg-gradient-to-br from-purple-900/50 to-indigo-950/50 border-2 border-purple-500/40 flex items-center justify-center relative shrink-0 shadow-2xl shadow-purple-600/20 overflow-hidden group">
+                <img 
+                  src={profileImg} 
+                  alt="Jorge Daluzon" 
+                  className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition duration-500" 
+                />
               </div>
 
               <div className="space-y-4 text-center md:text-left">
@@ -348,9 +558,9 @@ export default function App() {
                   Information Technology student based in San Fernando, Pampanga. Dedicated to building reliable desktop and web applications, designing database architectures, and engineering user-centric software interfaces.
                 </p>
                 <div className="pt-2">
-                  <a 
-                    href="/assets/resume.pdf" 
-                    download 
+                  <a
+                    href="/assets/resume.pdf"
+                    download
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-xs font-semibold rounded-lg transition duration-300 shadow-md"
                   >
                     <Download className="w-4 h-4" /> Download Resume
@@ -365,7 +575,7 @@ export default function App() {
                   <Award className="w-8 h-8" />
                 </div>
                 <div>
-                  <div className="text-2xl font-extrabold text-white">8</div>
+                  <div className="text-2xl font-extrabold text-white">13</div>
                   <div className="text-xs text-gray-400">Certificates Earned</div>
                 </div>
               </div>
@@ -375,7 +585,7 @@ export default function App() {
                   <FolderCode className="w-8 h-8" />
                 </div>
                 <div>
-                  <div className="text-2xl font-extrabold text-white">3</div>
+                  <div className="text-2xl font-extrabold text-white">7</div>
                   <div className="text-xs text-gray-400">Total Projects</div>
                 </div>
               </div>
@@ -394,8 +604,8 @@ export default function App() {
         </motion.section>
 
         {/* 3. PORTFOLIO SHOWCASE WITH FADE-IN */}
-        <motion.section 
-          id="portfolio" 
+        <motion.section
+          id="portfolio"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.2 }}
@@ -405,24 +615,30 @@ export default function App() {
           <div className="max-w-6xl mx-auto space-y-10">
             <div className="text-center space-y-2">
               <h2 className="text-3xl font-extrabold tracking-tight">Portfolio Showcase</h2>
-              <p className="text-xs text-gray-400">Explore technical projects, continuous certifications, and development toolkits.</p>
+              <p className="text-xs text-gray-400">Explore technical software, web designs, continuous certifications, and development toolkits.</p>
             </div>
 
-            <div className="flex justify-center gap-2 bg-white/5 p-1.5 rounded-xl max-w-md mx-auto border border-purple-500/30">
-              {['projects', 'certificates', 'tech'].map((tab) => (
+            {/* TAB NAVIGATION */}
+            <div className="flex justify-center gap-2 bg-white/5 p-1.5 rounded-xl max-w-xl mx-auto border border-purple-500/30">
+              {[
+                { key: 'projects', label: 'Systems' },
+                { key: 'webdesign', label: 'Web Design' },
+                { key: 'services', label: 'Services' },
+                { key: 'certificates', label: 'Certificates' },
+                { key: 'tech', label: 'Tech Stack' }
+              ].map((tab) => (
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 py-2 text-xs font-semibold rounded-lg capitalize transition ${
-                    activeTab === tab ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
-                  }`}
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`flex-1 py-2 text-xs font-semibold rounded-lg capitalize transition ${activeTab === tab.key ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
+                    }`}
                 >
-                  {tab === 'tech' ? 'Tech Stack' : tab}
+                  {tab.label}
                 </button>
               ))}
             </div>
 
-            {/* Projects Tab */}
+            {/* Systems Projects Tab */}
             {activeTab === 'projects' && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {Object.entries(projectData).map(([key, proj]) => (
@@ -445,20 +661,100 @@ export default function App() {
               </div>
             )}
 
-            {/* Certificates Tab */}
-            {activeTab === 'certificates' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
-                  <div
-                    key={id}
-                    onClick={() => setSelectedCert(id)}
-                    className="bg-white/5 p-5 rounded-xl border border-purple-500/20 hover:border-purple-400 hover:scale-105 cursor-pointer transition duration-300 text-center space-y-3 group"
-                  >
-                    <Award className="w-10 h-10 text-purple-400 mx-auto group-hover:text-purple-300" />
-                    <h4 className="font-bold text-xs">Certificate #{id}</h4>
-                    <p className="text-[10px] text-gray-400">Click to view credential details</p>
+            {/* Web Design Projects Tab */}
+            {activeTab === 'webdesign' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {webDesignData.map((web) => (
+                  <div key={web.id} className="bg-white/5 rounded-xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition duration-300 p-5 space-y-4">
+                    <div className="h-52 bg-purple-950/40 rounded-lg border border-purple-500/10 overflow-hidden">
+                      <img src={web.image} alt={web.title} className="w-full h-full object-cover rounded-lg" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-base text-purple-200">{web.title}</h3>
+                      <p className="text-xs text-gray-400">{web.desc}</p>
+                      <div className="flex flex-wrap gap-2 pt-2">
+                        {web.tech.map((t, idx) => (
+                          <span key={idx} className="px-2.5 py-1 bg-purple-900/40 border border-purple-500/30 text-purple-300 text-[10px] rounded-md font-mono">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {/* Services Tab */}
+            {activeTab === 'services' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {servicesData.map((service) => (
+                  <div
+                    key={service.id}
+                    className="bg-white/5 rounded-xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition duration-300 p-5 flex flex-col justify-between space-y-4"
+                  >
+                    <div className="space-y-3">
+                      <div className="h-40 bg-purple-950/40 rounded-lg flex items-center justify-center border border-purple-500/10 overflow-hidden text-purple-400 text-4xl">
+                        {service.icon}
+                      </div>
+
+                      <h3 className="font-bold text-base text-purple-200">{service.title}</h3>
+
+                      <p className="text-xs text-gray-400 leading-relaxed">
+                        {service.briefDesc}
+                      </p>
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        onClick={() => setSelectedServiceCategory(service)}
+                        className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-lg shadow-purple-600/20 transition duration-300 flex items-center justify-center gap-1"
+                      >
+                        View More →
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Certificates Tab with Show More / Less */}
+            {activeTab === 'certificates' && (
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {visibleCerts.map((cert) => (
+                    <div
+                      key={cert.id}
+                      onClick={() => setSelectedCert(cert)}
+                      className="bg-white/5 rounded-xl border border-purple-500/20 hover:border-purple-400 hover:scale-[1.02] cursor-pointer transition duration-300 p-4 space-y-3 flex flex-col justify-between"
+                    >
+                      <div className="space-y-3">
+                        <div className="h-44 bg-purple-950/40 rounded-lg border border-purple-500/10 overflow-hidden">
+                          <img src={cert.image} alt={cert.title} className="w-full h-full object-cover rounded-lg" />
+                        </div>
+                        <h4 className="font-bold text-sm text-purple-200">{cert.title}</h4>
+                        <span className={`inline-block px-2 py-0.5 text-[10px] rounded font-semibold ${cert.issuer === 'IBM' ? 'bg-blue-900/40 text-blue-300 border border-blue-500/30' : 'bg-emerald-900/40 text-emerald-300 border border-emerald-500/30'
+                          }`}>
+                          Issued by {cert.issuer}
+                        </span>
+                        <p className="text-xs text-gray-400 line-clamp-2">{cert.desc}</p>
+                      </div>
+                      <div className="pt-2 text-right">
+                        <span className="text-[10px] text-purple-300 underline font-mono">View details →</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* SHOW MORE / SHOW LESS BUTTON */}
+                <div className="text-center pt-4">
+                  <button
+                    onClick={() => setShowAllCerts(!showAllCerts)}
+                    className="px-6 py-2.5 bg-purple-600/40 hover:bg-purple-600 text-purple-200 hover:text-white text-xs font-semibold rounded-xl border border-purple-500/50 transition duration-300"
+                  >
+                    {showAllCerts ? 'Show Less' : `Show More (${certificatesList.length - 6} More Certificates)`}
+                  </button>
+                </div>
               </div>
             )}
 
@@ -477,112 +773,56 @@ export default function App() {
           </div>
         </motion.section>
 
-        {/* 4. CONTACT SECTION WITH FADE-IN */}
-        <motion.section 
-          id="contact" 
+        {/* 4. CONTACT SECTION WITH DIRECT CLICKABLE GMAIL */}
+        <motion.section
+          id="contact"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.2 }}
           variants={sectionVariant}
           className="min-h-screen px-6 py-20 bg-[#05020a]"
         >
-          <div className="max-w-6xl mx-auto space-y-12">
-            
+          <div className="max-w-4xl mx-auto space-y-12">
+
             <div className="text-center space-y-2">
               <h2 className="text-3xl font-extrabold tracking-tight">Get In Touch</h2>
-              <p className="text-xs text-gray-400">Feel free to leave a message or connect through my official channels.</p>
+              <p className="text-xs text-gray-400">Click below to send a direct message or hire via Gmail.</p>
             </div>
 
-            <div className="bg-white/5 p-8 rounded-2xl border border-purple-500/30 grid grid-cols-1 md:grid-cols-2 gap-8 shadow-2xl">
-              
-              <div className="space-y-6">
-                <div className="flex items-center space-x-3 text-purple-300">
-                  <MessageSquare className="w-6 h-6" />
-                  <h3 className="text-xl font-bold text-white">Let's Connect</h3>
-                </div>
-                <p className="text-xs text-gray-300 leading-relaxed">
-                  I am open to discussing software development projects, database roles, and collaborations. Send a message!
-                </p>
-
-                <div className="space-y-4 pt-2">
-                  <div className="bg-white/5 p-3 rounded-lg border border-purple-500/20 flex items-center space-x-3">
-                    <Mail className="w-5 h-5 text-purple-400" />
-                    <span className="text-xs text-gray-300">jorgedaluzon5@gmail.com</span>
-                  </div>
-                  <div className="bg-white/5 p-3 rounded-lg border border-purple-500/20 flex items-center space-x-3">
-                    <MapPin className="w-5 h-5 text-purple-400" />
-                    <span className="text-xs text-gray-300">San Fernando, Pampanga, Philippines</span>
-                  </div>
-                </div>
+            {/* Direct Gmail Contact Card */}
+            <div className="bg-white/5 p-8 rounded-2xl border border-purple-500/30 shadow-2xl space-y-6 text-center">
+              <div className="flex items-center justify-center space-x-3 text-purple-300">
+                <MessageSquare className="w-8 h-8 text-purple-400" />
+                <h3 className="text-2xl font-bold text-white">Let's Connect</h3>
               </div>
 
-              {/* Working Email Form */}
-              <div>
-                {status.text && (
-                  <div className={`p-3 rounded-lg text-xs mb-4 text-center ${
-                    status.type === 'success' 
-                      ? 'bg-green-900/40 text-green-300 border border-green-500/30' 
-                      : 'bg-red-900/40 text-red-300 border border-red-500/30'
-                  }`}>
-                    {status.text}
-                  </div>
-                )}
+              <p className="text-xs md:text-sm text-gray-300 max-w-lg mx-auto leading-relaxed">
+                I am available for software development, database administrative roles, and technical assistant tasks. Click my official email below to open Gmail directly with a pre-formatted hiring request.
+              </p>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-purple-200 mb-1">Name</label>
-                    <input 
-                      type="text" 
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required 
-                      placeholder="Your name" 
-                      className="w-full bg-black/40 border border-purple-500/30 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-purple-400 text-white" 
-                    />
+              {/* Directly Clickable Gmail Button */}
+              <div className="pt-4 flex justify-center">
+                <a
+                  href={mailToLink}
+                  className="group bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 px-6 py-4 rounded-xl border border-purple-400/40 flex items-center space-x-4 shadow-xl shadow-purple-600/30 transition duration-300 transform hover:-translate-y-1"
+                >
+                  <Mail className="w-6 h-6 text-white group-hover:scale-110 transition" />
+                  <div className="text-left">
+                    <div className="text-[10px] uppercase font-mono text-purple-200">Official Gmail Contact</div>
+                    <div className="text-sm md:text-base font-extrabold text-white">jorgedaluzon5@gmail.com</div>
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-purple-200 mb-1">Email</label>
-                    <input 
-                      type="email" 
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required 
-                      placeholder="Your email address" 
-                      className="w-full bg-black/40 border border-purple-500/30 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-purple-400 text-white" 
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-purple-200 mb-1">Message</label>
-                    <textarea 
-                      rows={3} 
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required 
-                      placeholder="Write your message here..." 
-                      className="w-full bg-black/40 border border-purple-500/30 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-purple-400 text-white" 
-                    />
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    disabled={loading}
-                    className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-900/50 text-white text-xs font-semibold rounded-lg transition duration-300 shadow-lg flex items-center justify-center gap-2"
-                  >
-                    <Send className="w-4 h-4" /> {loading ? 'Sending...' : 'Send Message'}
-                  </button>
-                </form>
+                </a>
               </div>
 
+              <div className="flex items-center justify-center space-x-2 text-xs text-gray-400 pt-2">
+                <MapPin className="w-4 h-4 text-purple-400" />
+                <span>San Fernando, Pampanga, Philippines</span>
+              </div>
             </div>
 
             {/* Social Links Box */}
             <div className="bg-white/5 p-6 rounded-2xl border border-purple-500/30 space-y-6">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 justify-center md:justify-start">
                 <Share2 className="w-5 h-5 text-purple-400" />
                 <h3 className="text-lg font-bold text-white">Social Networks</h3>
               </div>
@@ -614,6 +854,69 @@ export default function App() {
         </motion.section>
 
       </div>
+
+      {/* SUB-SERVICES CONTAINER / MODAL */}
+      {selectedServiceCategory && (
+        <div className="fixed inset-0 z-50 bg-[#05020a]/90 backdrop-blur-md overflow-y-auto p-4 md:p-8 flex items-center justify-center">
+          <div className="bg-[#0c061a] border border-purple-500/40 rounded-2xl max-w-4xl w-full p-6 md:p-8 space-y-6 relative shadow-2xl my-8">
+            <button
+              onClick={() => setSelectedServiceCategory(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white p-2 rounded-lg bg-white/5 border border-purple-500/20 transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="space-y-2 border-b border-purple-500/20 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-purple-950/60 rounded-xl border border-purple-500/30">
+                  {selectedServiceCategory.icon}
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-purple-200">{selectedServiceCategory.title}</h3>
+                  <p className="text-xs text-gray-400">{selectedServiceCategory.fullDesc}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-300">
+                Available Specific Services
+              </h4>
+
+              {/* SEPARATED CONTAINERS FOR EACH SUB-SERVICE */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {selectedServiceCategory.subServices.map((sub) => (
+                  <div
+                    key={sub.id}
+                    className="bg-white/5 rounded-xl border border-purple-500/20 p-4 flex flex-col justify-between space-y-4 hover:border-purple-400 transition"
+                  >
+                    <div className="space-y-2">
+                      <h5 className="font-bold text-sm text-purple-100">{sub.title}</h5>
+                      <p className="text-xs text-gray-400 leading-relaxed">{sub.desc}</p>
+                    </div>
+
+                    <a
+                      href={`mailto:jorgedaluzon5@gmail.com?subject=Availing%20Service%3A%20${encodeURIComponent(sub.title)}&body=Hi%20Jorge%2C%20I%20am%20interested%20in%20availing%20your%20service%3A%20${encodeURIComponent(sub.title)}.`}
+                      className="w-full text-center py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-md transition duration-300 block"
+                    >
+                      Avail Service
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-2 text-right">
+              <button
+                onClick={() => setSelectedServiceCategory(null)}
+                className="px-5 py-2 bg-white/10 hover:bg-white/20 text-xs font-semibold rounded-lg text-gray-300 transition"
+              >
+                Close Window
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* PROJECT DETAILS MODAL */}
       {selectedProject && (
@@ -667,13 +970,18 @@ export default function App() {
       {/* CERTIFICATE MODAL */}
       {selectedCert && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white/5 p-8 rounded-2xl border border-purple-500/40 max-w-md w-full space-y-4 text-center relative">
+          <div className="bg-[#0c061a] p-6 rounded-2xl border border-purple-500/40 max-w-md w-full space-y-4 text-center relative">
             <button onClick={() => setSelectedCert(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white">
               <X className="w-5 h-5" />
             </button>
-            <Award className="w-16 h-16 text-purple-400 mx-auto" />
-            <h3 className="text-xl font-bold">Certificate Credential #{selectedCert}</h3>
-            <p className="text-xs text-gray-300">Verified certification in software engineering, UI/UX design, and database administration.</p>
+            <div className="h-48 bg-purple-950/40 rounded-lg overflow-hidden border border-purple-500/20">
+              <img src={selectedCert.image} alt={selectedCert.title} className="w-full h-full object-cover" />
+            </div>
+            <h3 className="text-lg font-bold text-purple-200">{selectedCert.title}</h3>
+            <span className="inline-block px-2.5 py-1 text-xs rounded bg-purple-900/40 text-purple-300 border border-purple-500/30">
+              Issued by {selectedCert.issuer}
+            </span>
+            <p className="text-xs text-gray-300">{selectedCert.desc}</p>
             <button onClick={() => setSelectedCert(null)} className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-xs font-semibold rounded-lg transition">
               Close
             </button>
