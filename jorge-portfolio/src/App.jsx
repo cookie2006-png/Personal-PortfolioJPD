@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
   Code2, Terminal, Cpu, Database, ShieldCheck, ArrowRight, Mail,
-  User, Download, Award, FolderCode, Calendar, UserCheck,
+  Download, Award, FolderCode, Calendar, UserCheck,
   Armchair, Activity, MessageSquare, MapPin, Share2,
-  ArrowLeft, Image as ImageIcon, X
+  ArrowLeft, X
 } from 'lucide-react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { motion } from 'framer-motion';
@@ -13,6 +13,7 @@ import { FaLaptopCode, FaCode, FaHeadset, FaHashtag } from 'react-icons/fa';
 // ASSETS IMPORTS
 // -------------------------------------------------------------
 import profileImg from './assets/profile.jpg';
+
 import cert1 from './assets/certificates/Building-Story-base-Design-Cert.png';
 import cert2 from './assets/certificates/Clean-Refine-and-Visualize-Data- with-IBM-Walson-Studio.png';
 import cert3 from './assets/certificates/Conducting-Usability-and-Gathering-Feedback-Cert.png';
@@ -351,22 +352,24 @@ export default function App() {
   const [charIdx, setCharIdx] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Default Gmail Mailto link with pre-filled subject
+  // Placeholder message template for main contact section
   const placeholderBody = encodeURIComponent(
-    `Hi Jorge,
+`Hi Jorge,
 
 I am reaching out regarding:
 [ ] Availing a Service / Virtual Assistant
 [ ] Job Opportunity / Hiring
 
 Service / Assistance Needed:
-(If you are availing a service or assistant, kindly indicate the specific service or assistance you want to avail here)
+(If you are availing a service or assistant, kindly please indicate the service or assistance you want to avail here)
 
 Message / Details:
-(Write your message here)
+(Write your project details or inquiries here)
 `
   );
-  const mailToLink = "mailto:jorgedaluzon5@gmail.com?subject=Availing%20an%20Assistant%20%2F%20Contact%20for%20hiring";
+
+  // General Gmail Mailto link with pre-filled subject & placeholder body
+  const mailToLink = `mailto:jorgedaluzon5@gmail.com?subject=Availing%20an%20Assistant%20%2F%20Contact%20for%20hiring&body=${placeholderBody}`;
 
   // Dynamic Typing Loop
   useEffect(() => {
@@ -544,6 +547,7 @@ Message / Details:
 
             <div className="bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-purple-500/20 flex flex-col md:flex-row items-center gap-10">
 
+              {/* Profile Image Container */}
               <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl bg-gradient-to-br from-purple-900/50 to-indigo-950/50 border-2 border-purple-500/40 flex items-center justify-center relative shrink-0 shadow-2xl shadow-purple-600/20 overflow-hidden group">
                 <img 
                   src={profileImg} 
@@ -559,8 +563,10 @@ Message / Details:
                 </p>
                 <div className="pt-2">
                   <a
-                    href="/assets/resume.pdf"
-                    download
+                    href="/resume.pdf"
+                    download="Jorge_Daluzon_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-xs font-semibold rounded-lg transition duration-300 shadow-md"
                   >
                     <Download className="w-4 h-4" /> Download Resume
@@ -718,7 +724,7 @@ Message / Details:
               </div>
             )}
 
-            {/* Certificates Tab with Show More / Less */}
+            {/* Certificates Tab */}
             {activeTab === 'certificates' && (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -746,7 +752,6 @@ Message / Details:
                   ))}
                 </div>
 
-                {/* SHOW MORE / SHOW LESS BUTTON */}
                 <div className="text-center pt-4">
                   <button
                     onClick={() => setShowAllCerts(!showAllCerts)}
@@ -773,7 +778,7 @@ Message / Details:
           </div>
         </motion.section>
 
-        {/* 4. CONTACT SECTION WITH DIRECT CLICKABLE GMAIL */}
+        {/* 4. CONTACT SECTION */}
         <motion.section
           id="contact"
           initial="hidden"
@@ -855,7 +860,7 @@ Message / Details:
 
       </div>
 
-      {/* SUB-SERVICES CONTAINER / MODAL */}
+      {/* SUB-SERVICES MODAL (CONTAINER FOR VIEW MORE) */}
       {selectedServiceCategory && (
         <div className="fixed inset-0 z-50 bg-[#05020a]/90 backdrop-blur-md overflow-y-auto p-4 md:p-8 flex items-center justify-center">
           <div className="bg-[#0c061a] border border-purple-500/40 rounded-2xl max-w-4xl w-full p-6 md:p-8 space-y-6 relative shadow-2xl my-8">
@@ -895,8 +900,18 @@ Message / Details:
                       <p className="text-xs text-gray-400 leading-relaxed">{sub.desc}</p>
                     </div>
 
+                    {/* SUB-SERVICE DIRECT AVAIL MAILTO BUTTON WITH PRE-FILLED PLACEHOLDER */}
                     <a
-                      href={`mailto:jorgedaluzon5@gmail.com?subject=Availing%20Service%3A%20${encodeURIComponent(sub.title)}&body=Hi%20Jorge%2C%20I%20am%20interested%20in%20availing%20your%20service%3A%20${encodeURIComponent(sub.title)}.`}
+                      href={`mailto:jorgedaluzon5@gmail.com?subject=Availing%20Service%3A%20${encodeURIComponent(sub.title)}&body=${encodeURIComponent(
+`Hi Jorge,
+
+I would like to avail your service: ${sub.title}.
+
+Project / Assistance Details:
+(If you are availing a service or assistant, kindly please indicate the specific requirements or details here)
+
+`
+                      )}`}
                       className="w-full text-center py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg shadow-md transition duration-300 block"
                     >
                       Avail Service
@@ -949,8 +964,15 @@ Message / Details:
               </div>
 
               <div className="space-y-6">
-                <div className="h-64 bg-white/5 rounded-2xl border border-purple-500/30 flex items-center justify-center overflow-hidden">
-                  <ImageIcon className="w-20 h-20 text-purple-400" />
+                {/* INTENTIONAL FALLBACK CARD (NO MISSING IMAGE ISSUES) */}
+                <div className="h-64 bg-purple-950/40 rounded-2xl border border-purple-500/30 flex flex-col items-center justify-center gap-4 overflow-hidden p-6 text-center">
+                  <div className="p-4 bg-purple-900/40 rounded-2xl border border-purple-500/30">
+                    {renderProjectIcon(selectedProject.iconType)}
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-purple-200">{selectedProject.title}</p>
+                    <p className="text-xs font-mono text-purple-400/70">System Architecture & Specifications</p>
+                  </div>
                 </div>
 
                 <div className="bg-white/5 p-6 rounded-2xl border border-purple-500/20 space-y-3">
